@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PHARMA CONTROL PRO 5.0</title>
+<style>
+body{font-family:Arial;background:#eef5f1;margin:0;display:grid;place-items:center;min-height:100vh}
+.box{background:white;padding:25px;border-radius:18px;width:85%;max-width:360px;box-shadow:0 5px 25px #0002}
+h2{color:#08794c;text-align:center}
+input,button{box-sizing:border-box;width:100%;padding:14px;margin:8px 0;border-radius:9px;font-size:16px}
+input{border:1px solid #ccc}
+button{background:#08794c;color:white;border:0}
+#msg{text-align:center}
+</style>
+</head>
+<body>
+<div class="box">
+<h2>💊 PHARMA CONTROL PRO 5.0</h2>
+<input id="email" type="email" placeholder="Email">
+<input id="password" type="password" placeholder="Parol">
+<button onclick="login()">Kirish</button>
+<p id="msg"></p>
+</div>
+
+<script>
+const URL_SUPABASE="https://kebvagobaaxpoymnwtma.supabase.co";
+const KEY="sb_publishable_dy3oyAcZV6gEd5nMfd7Ghg_mRXikILW";
+
+async function login(){
+const msg=document.getElementById("msg");
+msg.textContent="Tekshirilmoqda...";
+try{
+const r=await fetch(URL_SUPABASE+"/auth/v1/token?grant_type=password",{
+method:"POST",
+headers:{
+"Content-Type":"application/json",
+"apikey":KEY
+},
+body:JSON.stringify({
+email:document.getElementById("email").value.trim(),
+password:document.getElementById("password").value
+})
+});
+const d=await r.json();
+if(!r.ok)throw Error(d.msg||d.error_description||d.message||"Kirishda xatolik");
+msg.textContent="✅ Kirish muvaffaqiyatli!";
+}catch(e){
+msg.textContent="❌ "+e.message;
+}
+}
+</script>
+</body>
+</html>
+
